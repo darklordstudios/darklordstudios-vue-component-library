@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
 import { resolve } from 'node:path'
@@ -13,7 +12,6 @@ export default defineConfig({
   plugins: [
     vue(),
     dts(),
-    vueDevTools(),
     Components({
       resolvers: [PrimeVueResolver()],
     }),
@@ -27,7 +25,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'DarklordStudiosVue',
-      fileName: 'darklord-studios-vue',
+      fileName: (format) => `darklord-studios-vue.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],
