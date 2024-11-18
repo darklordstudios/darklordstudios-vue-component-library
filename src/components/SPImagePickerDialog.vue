@@ -1,17 +1,16 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
-/* eslint-disable vue/multi-word-component-names */
-/* eslint-disable no-inner-declarations */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ref, onBeforeMount, onMounted, onUnmounted, inject } from 'vue'
 import type { Ref } from 'vue'
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
-import { useImagesStore } from './stores/images'
-import type { StockImagesEvent, SubmitValue } from './interfaces/StockImageTypes'
-import type { IImagePickerResult } from './interfaces/ImagePickerTypes'
+import { useImagesStore } from '../stores/images'
+import type { StockImagesEvent, SubmitValue } from '../interfaces/StockImageTypes'
+import type { IImagePickerResult } from '../interfaces/ImagePickerTypes.ts'
 
 // #region VARIABLES
 const appImages = useImagesStore()
-const selectedImageUrl = ref('')
+// const webUrl = ref('')
+// const selectedImageUrl = ref('')
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
 
 // #endregion
@@ -23,25 +22,35 @@ function handleSave(event: StockImagesEvent): void {
   if (event.Values && (event.Values as SubmitValue[]).length > 0) {
     cdnFileInfo = (event.Values as SubmitValue[])[0]
     if (cdnFileInfo) {
-      let imagePickerResult: IImagePickerResult = {
+      const imagePickerResult: IImagePickerResult = {
         downloadFileContent: () => {
-          return appImages.getImageContentAsFile(cdnFileInfo.sourceUrl, appImages.getFileNameFromUrl(appImages.getFileNameFromUrl(cdnFileInfo.sourceUrl)))
+          return appImages.getImageContentAsFile(
+            cdnFileInfo.sourceUrl,
+            appImages.getFileNameFromUrl(appImages.getFileNameFromUrl(cdnFileInfo.sourceUrl)),
+          )
         },
         imageAbsoluteUrl: cdnFileInfo.sourceUrl,
         imageName: appImages.getFileNameFromUrl(cdnFileInfo.sourceUrl),
-        imageNameWithoutExtension: appImages.getFileNameWithoutExtension(cdnFileInfo.sourceUrl)
+        imageNameWithoutExtension: appImages.getFileNameWithoutExtension(cdnFileInfo.sourceUrl),
       }
-      console.log('HANDLE SAVE ' + imagePickerResult)
-      selectedImageUrl.value = imagePickerResult.imageAbsoluteUrl
-      dialogRef?.value.close({
-        url: selectedImageUrl.value
-      })
+      console.log('HANDLE SAVE ' + imagePickerResult.imageAbsoluteUrl)
+      appImages.selectedImageUrl = imagePickerResult.imageAbsoluteUrl
+      // selectedImageUrl.value = imagePickerResult.imageAbsoluteUrl
+      if (dialogRef) {
+        dialogRef.value.close({
+          imageurl: appImages.selectedImageUrl,
+        })
+      }
     }
   }
 }
 
 function handleImageIframeEvent(event): void {
-  if (!event || !event.origin || event.origin.indexOf('https://hubblecontent.osi.office.net') !== 0) {
+  if (
+    !event ||
+    !event.origin ||
+    event.origin.indexOf('https://hubblecontent.osi.office.net') !== 0
+  ) {
     return
   }
   const eventData: StockImagesEvent = JSON.parse(event.data)
@@ -57,7 +66,9 @@ function handleImageIframeEvent(event): void {
 // #endregion
 
 onBeforeMount(() => {
-  appImages.getLibraries()
+  if (dialogRef?.value.data.wurl) {
+    appImages.getLibraries(dialogRef?.value.data.wurl)
+  }
 })
 
 onMounted(() => {

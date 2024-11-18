@@ -8,8 +8,16 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
+    DialogContent: typeof import('./src/components/Dialog/DialogContent.vue')['default']
+    DynamicDialogManager: typeof import('./src/components/Dialog/DynamicDialogManager.vue')['default']
     InputGroup: typeof import('primevue/inputgroup')['default']
     InputGroupAddon: typeof import('primevue/inputgroupaddon')['default']
     SPImagePicker: typeof import('./src/components/SPImagePicker.vue')['default']
+    SPImagePickerDialog: typeof import('./src/components/SPImagePickerDialog.vue')['default']
+    Tab: typeof import('primevue/tab')['default']
+    TabList: typeof import('primevue/tablist')['default']
+    TabPanel: typeof import('primevue/tabpanel')['default']
+    TabPanels: typeof import('primevue/tabpanels')['default']
+    Tabs: typeof import('primevue/tabs')['default']
   }
 }

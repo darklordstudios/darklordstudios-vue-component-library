@@ -28,10 +28,13 @@ export default defineConfig({
       fileName: (format) => `darklord-studios-vue.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'pinia', 'primevue'],
       output: {
+        exports: "named",
         globals: {
           vue: 'Vue',
+          pinia: 'Pinia',
+          primevue: 'PrimeVue',
         },
       },
     },

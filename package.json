@@ -1,6 +1,6 @@
 {
 	"name": "darklordstudios-vue-component-library",
-	"version": "0.0.7",
+	"version": "0.0.24",
 	"description": "Darklord Studios Vue Library for SharePoint",
 	"type": "module",
 	"main": "./dist/darklord-studios-vue.umd.js",
@@ -26,7 +26,9 @@
 		"format": "prettier --write src/"
 	},
 	"peerDependencies": {
-		"vue": "^3.5.12"
+		"vue": "^3.5.12",
+		"pinia": "^2.2.6",
+		"primevue": "4.2.1"
 	},
 	"dependencies": {
 		"@primevue/themes": "4.2.1",

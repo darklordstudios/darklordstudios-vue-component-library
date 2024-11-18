@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface IImagePickerResult {
   imageName: string
   imageNameWithoutExtension: string
   imageAbsoluteUrl: string
   imageSize?: number
   spItemUrl?: string
-  downloadFileContent: () => Promise<File>
+  downloadFileContent: () => Promise<File | null>
   previewDataUrl?: string
 }
 export type { IImagePickerResult }
@@ -19,6 +20,7 @@ export type { IImagePickerTab }
 
 interface IImagePickerProps {
   label?: string
+  placeholder?: string
   buttonLabel?: string
   buttonIcon?: string
   onSave?: (imagePickerResult: IImagePickerResult[]) => void
